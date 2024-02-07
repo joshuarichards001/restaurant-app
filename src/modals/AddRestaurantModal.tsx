@@ -40,7 +40,7 @@ export default function AddRestaurantModal() {
               name: e.target.value,
             }))
           }
-          className="input input-sm bg-neutral mr-4 mb-4"
+          className="input input-sm input-bordered mr-4 mb-4"
         />
         <p>Food</p>
         <StarRating
