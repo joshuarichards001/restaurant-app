@@ -1,51 +1,53 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
-import { useEffect } from "react";
-import { firestore } from "../firebase";
-
-interface Restaurant {
-  id: string;
-  name: string;
-}
-
-const fetchRestaurants = async (): Promise<Restaurant[]> => {
-  const snapshot = await getDocs(collection(firestore, "users"));
-  return snapshot.docs.map((doc) => ({ id: doc.id, name: doc.data().name }));
-};
+import { collection, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import RestaurantModal from "../modals/RestaurantModal";
+import { db } from "../services/firebase";
+import { IRestaurant } from "../services/types";
+import Restaurant from "./Restaurant";
 
 export default function Restaurants() {
-  const queryClient = useQueryClient();
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["restaurants"],
-    queryFn: fetchRestaurants,
-    
-  });
+  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(firestore, "restaurants"),
+      collection(db, "restaurants"),
       (snapshot) => {
-        queryClient.setQueryData(
-          ["restaurants"],
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
-        );
+        const restaurants: IRestaurant[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data() as Omit<IRestaurant, "id">;
+          restaurants.push({
+            id: doc.id,
+            ...data,
+          });
+        });
+        setRestaurants(restaurants);
       },
     );
-    return () => unsubscribe();
-  }, [queryClient]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (isError) {
-    return <p>Error: {error.message}</p>;
-  }
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
-    <div>
-      {data?.map((restaurant) => (
-        <div key={restaurant.id}>{restaurant.name}</div>
+    <div className="flex flex-col">
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Food</th>
+            <th>Service</th>
+            <th>Vibe</th>
+          </tr>
+        </thead>
+        <tbody>
+          {restaurants?.map((restaurant: IRestaurant) => (
+            <Restaurant key={restaurant.id} restaurant={restaurant} />
+          ))}
+        </tbody>
+      </table>
+      {restaurants?.map((restaurant: IRestaurant) => (
+        <RestaurantModal key={restaurant.id} restaurant={restaurant} />
       ))}
     </div>
   );
