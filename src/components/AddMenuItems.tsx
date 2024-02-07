@@ -38,7 +38,7 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
             onChange={(e) => {
               onChangeInput(mI, e.target.value);
             }}
-            className="input input-sm bg-neutral mr-2"
+            className="input input-sm input-bordered mr-2"
           />
           <input
             type="checkbox"
