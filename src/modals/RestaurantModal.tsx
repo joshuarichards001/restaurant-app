@@ -25,7 +25,7 @@ export default function RestaurantModal({ restaurant }: Props) {
         />
       )}
       <form method="dialog" className="modal-backdrop">
-        <button>close</button>
+        <button onClick={() => setIsView(true)}>close</button>
       </form>
     </dialog>
   );
