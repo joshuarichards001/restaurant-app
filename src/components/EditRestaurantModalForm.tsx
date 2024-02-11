@@ -1,25 +1,29 @@
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../services/firebase";
+import { getInitialFormData } from "../services/functions";
 import { IRestaurant } from "../services/types";
 import AddMenuItems from "./AddMenuItems";
 import StarRating from "./StarRating";
 
 type Props = {
-  restaurant: IRestaurant;
+  restaurant?: IRestaurant;
   setIsView?: React.Dispatch<React.SetStateAction<boolean>>;
+  isAddNew?: boolean;
 };
 
 export default function EditRestaurantModalForm({
   restaurant,
   setIsView,
+  isAddNew,
 }: Props) {
-  const [formData, setFormData] = useState(restaurant);
+  const [formData, setFormData] = useState(restaurant ?? getInitialFormData());
 
   const setDocument = async () => {
     try {
       await setDoc(doc(db, "restaurants", formData.id), formData);
       setIsView && setIsView(true);
+      isAddNew && setFormData(getInitialFormData());
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -27,7 +31,17 @@ export default function EditRestaurantModalForm({
 
   return (
     <div className="modal-box h-3/4 flex flex-col">
-      <h1 className="text-2xl mb-2">Add Restaurant</h1>
+      <div className="flex justify-between">
+        <h1 className="text-2xl mb-2">Add Restaurant</h1>
+        {!isAddNew ? (
+          <button
+            className="btn btn-sm btn-outline"
+            onClick={() => setIsView && setIsView(true)}
+          >
+            Back
+          </button>
+        ) : null}
+      </div>
       <label htmlFor="name">Name</label>
       <input
         type="text"

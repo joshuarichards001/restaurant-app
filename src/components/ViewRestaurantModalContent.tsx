@@ -6,13 +6,11 @@ import StarRating from "./StarRating";
 
 type ViewProps = {
   restaurant: IRestaurant;
-  isView: boolean;
   setIsView: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ViewRestaurantModalContent({
   restaurant,
-  isView,
   setIsView,
 }: ViewProps) {
   const deleteRestaurant = async () => {
@@ -23,25 +21,25 @@ export default function ViewRestaurantModalContent({
 
   return (
     <div className="modal-box h-3/4">
-      <div className="flex flex-row mb-8 justify-between">
+      <div className="flex flex-row mb-8 justify-between items-center">
+        <h1 className="text-2xl mr-2">{restaurant.name}</h1>
         <div className="flex flex-row">
-          <h1 className="text-2xl mr-2">{restaurant.name}</h1>
           <button
-            className="btn btn-sm mr-4"
-            onClick={() => setIsView(!isView)}
+            className="btn btn-sm btn-outline mr-4"
+            onClick={() => setIsView(false)}
           >
             Edit
           </button>
+          <form method="dialog">
+            <button
+              onClick={deleteRestaurant}
+              className="btn btn-sm btn-outline btn-error"
+              type="submit"
+            >
+              Delete
+            </button>
+          </form>
         </div>
-        <form method="dialog">
-          <button
-            onClick={deleteRestaurant}
-            className="btn btn-sm btn-outline btn-error"
-            type="submit"
-          >
-            Delete
-          </button>
-        </form>
       </div>
       <div className="flex flex-col mb-4">
         <div className="flex flex-row justify-between">

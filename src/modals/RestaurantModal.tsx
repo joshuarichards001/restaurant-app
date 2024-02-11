@@ -15,7 +15,6 @@ export default function RestaurantModal({ restaurant }: Props) {
       {isView ? (
         <ViewRestaurantModalContent
           restaurant={restaurant}
-          isView={isView}
           setIsView={setIsView}
         />
       ) : (
