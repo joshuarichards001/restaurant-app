@@ -23,6 +23,8 @@ export default function ViewRestaurantModalContent({
     <div className="modal-box h-3/4">
       <div className="flex flex-row mb-8 justify-between items-center">
         <h1 className="text-2xl mr-2">{restaurant.name}</h1>
+        {/** below is a component to catch the auto focus so it doesn't go to the edit button */}
+        <input style={{ opacity: 0, position: "absolute" }} tabIndex={-1} />
         <div className="flex flex-row">
           <button
             className="btn btn-sm btn-outline mr-4"
