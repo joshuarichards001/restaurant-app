@@ -1,7 +1,7 @@
 import { useState } from "react";
-import EditRestaurantModalForm from "../components/EditRestaurantModalForm";
-import ViewRestaurantModalContent from "../components/ViewRestaurantModalContent";
 import { IRestaurant } from "../services/types";
+import EditRestaurantModalForm from "./EditRestaurantModalForm";
+import ViewRestaurantModalContent from "./ViewRestaurantModalContent";
 
 type Props = {
   restaurant: IRestaurant;

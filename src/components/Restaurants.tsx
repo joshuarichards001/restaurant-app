@@ -1,9 +1,9 @@
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import RestaurantModal from "../modals/RestaurantModal";
 import { db } from "../services/firebase";
 import { IRestaurant } from "../services/types";
 import Restaurant from "./Restaurant";
+import RestaurantModal from "./RestaurantModal";
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);

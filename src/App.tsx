@@ -1,9 +1,8 @@
 import { User, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import AddRestaurantButton from "./components/AddRestaurantButton";
+import AddRestaurant from "./components/AddRestaurant";
 import Restaurants from "./components/Restaurants";
 import SignInButton from "./components/SignInButton";
-import AddRestaurantModal from "./modals/AddRestaurantModal";
 import { auth } from "./services/firebase";
 
 function App() {
@@ -37,8 +36,7 @@ function App() {
     <div>
       <h1 className="text-4xl mb-4 m-5 mt-8 text-primary">Restaurants</h1>
       <Restaurants />
-      <AddRestaurantButton />
-      <AddRestaurantModal />
+      <AddRestaurant />
     </div>
   );
 }
