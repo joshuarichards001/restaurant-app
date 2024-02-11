@@ -9,5 +9,6 @@ export const getInitialFormData = (): IRestaurant => {
     serviceRating: 0,
     vibeRating: 0,
     menuItems: [],
+    littleBlanket: false,
   };
 };
