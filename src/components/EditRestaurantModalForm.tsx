@@ -79,6 +79,18 @@ export default function EditRestaurantModalForm({
           setFormData((prevState) => ({ ...prevState, vibeRating: value }))
         }
       />
+      <p>Lil Blankie</p>
+      <input
+        type="checkbox"
+        className="checkbox mb-4"
+        checked={formData.littleBlanket}
+        onChange={() =>
+          setFormData((prevState) => ({
+            ...prevState,
+            littleBlanket: !prevState.littleBlanket,
+          }))
+        }
+      />
       <AddMenuItems
         menuItems={formData.menuItems}
         setMenuItems={(items: IRestaurant["menuItems"]) =>

@@ -43,20 +43,27 @@ export default function ViewRestaurantModalContent({
           </form>
         </div>
       </div>
-      <div className="flex flex-col mb-4">
-        <div className="flex flex-row justify-between">
-          <div>
-            <p>Food</p>
-            <StarRating rating={restaurant.foodRating} />
-          </div>
-          <div>
-            <p>Service</p>
-            <StarRating rating={restaurant.serviceRating} />
-          </div>
+      <div className="grid grid-cols-2 grid-rows-2 mb-4">
+        <div>
+          <p>Food</p>
+          <StarRating rating={restaurant.foodRating} />
+        </div>
+        <div>
+          <p>Service</p>
+          <StarRating rating={restaurant.serviceRating} />
         </div>
         <div>
           <p>Vibe</p>
           <StarRating rating={restaurant.vibeRating} />
+        </div>
+        <div>
+          <p>Lil Blankie</p>
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={restaurant.littleBlanket}
+            disabled={true}
+          />
         </div>
       </div>
       <div>

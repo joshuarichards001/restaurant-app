@@ -38,6 +38,7 @@ export default function Restaurants() {
             <th>Food</th>
             <th>Service</th>
             <th>Vibe</th>
+            <th>Blankie</th>
           </tr>
         </thead>
         <tbody>

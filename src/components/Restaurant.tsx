@@ -19,6 +19,7 @@ export default function Restaurant({ restaurant }: Props) {
       <td>{restaurant.foodRating}</td>
       <td>{restaurant.serviceRating}</td>
       <td>{restaurant.vibeRating}</td>
+      <td><input type="checkbox" className="checkbox" checked={restaurant.littleBlanket} disabled={true} /></td>
     </tr>
   );
 }
