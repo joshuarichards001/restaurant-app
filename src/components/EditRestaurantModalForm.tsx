@@ -1,5 +1,5 @@
-import { doc, setDoc } from "firebase/firestore";
-import { useState } from "react";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { db } from "../services/firebase";
 import { getInitialFormData } from "../services/functions";
 import { IRestaurant } from "../services/types";
@@ -8,7 +8,7 @@ import StarRating from "./StarRating";
 
 type Props = {
   restaurant?: IRestaurant;
-  isAddNew?: boolean;
+  isAddNew: boolean;
   modalId: string;
 };
 
@@ -19,14 +19,17 @@ export default function EditRestaurantModal({
 }: Props) {
   const [formData, setFormData] = useState(restaurant ?? getInitialFormData());
 
-  const setDocument = async () => {
-    try {
-      await setDoc(doc(db, "restaurants", formData.id), formData);
-      isAddNew && setFormData(getInitialFormData());
-    } catch (e) {
-      console.error("Error adding document: ", e);
+  useEffect(() => {
+    if (formData.name === "") {
+      return;
     }
-  };
+
+    const timeoutId = setTimeout(() => {
+      setDoc(doc(db, "restaurants", formData.id), formData);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [formData]);
 
   return (
     <dialog id={modalId} className="modal modal-bottom">
@@ -50,15 +53,17 @@ export default function EditRestaurantModal({
             }
             className="input input-bordered font-bold text-xl text-primary mr-4 mb-4"
           />
-          <form method="dialog">
-            <button
-              onClick={setDocument}
-              className="btn btn-primary"
-              type="submit"
-            >
-              Save
-            </button>
-          </form>
+          {!isAddNew && (
+            <form method="dialog">
+              <button
+                onClick={() => deleteDoc(doc(db, "restaurants", formData.id))}
+                className="btn btn-outline btn-error btn-sm"
+                type="submit"
+              >
+                delete
+              </button>
+            </form>
+          )}
         </div>
         <div className="grid grid-cols-2 grid-rows-2 mb-4">
           <div>
@@ -120,7 +125,13 @@ export default function EditRestaurantModal({
         />
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button onClick={() => setFormData(restaurant ?? getInitialFormData())}>
+        <button
+          onClick={() => {
+            if (isAddNew) {
+              setFormData(getInitialFormData());
+            }
+          }}
+        >
           close
         </button>
       </form>

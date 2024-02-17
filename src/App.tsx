@@ -47,7 +47,7 @@ function App() {
       >
         <PlusIcon />
       </button>
-      <EditRestaurantModal isAddNew={true} modalId="add_restaurant" />
+      <EditRestaurantModal modalId="add_restaurant" isAddNew={true} />
     </div>
   );
 }

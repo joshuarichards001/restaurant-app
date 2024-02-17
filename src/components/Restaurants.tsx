@@ -50,6 +50,7 @@ export default function Restaurants() {
       {restaurants?.map((restaurant: IRestaurant) => (
         <EditRestaurantModal
           key={restaurant.id}
+          isAddNew={false}
           restaurant={restaurant}
           modalId={`restaurant_${restaurant.id}`}
         />
