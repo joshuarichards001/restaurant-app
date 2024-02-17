@@ -53,17 +53,6 @@ export default function EditRestaurantModal({
             }
             className="input input-bordered font-bold text-xl text-primary mr-4 mb-4"
           />
-          {!isAddNew && (
-            <form method="dialog">
-              <button
-                onClick={() => deleteDoc(doc(db, "restaurants", formData.id))}
-                className="btn btn-outline btn-error btn-sm"
-                type="submit"
-              >
-                delete
-              </button>
-            </form>
-          )}
         </div>
         <div className="grid grid-cols-2 grid-rows-2 mb-4">
           <div>
@@ -123,6 +112,21 @@ export default function EditRestaurantModal({
             setFormData((prevState) => ({ ...prevState, menuItems: items }))
           }
         />
+        {!isAddNew && (
+          <form method="dialog">
+            <button
+              onClick={() => {
+                if (window.confirm("Are you sure?")) {
+                  deleteDoc(doc(db, "restaurants", formData.id));
+                }
+              }}
+              className="btn btn-outline btn-error btn-sm"
+              type="submit"
+            >
+              Delete Restaurant
+            </button>
+          </form>
+        )}
       </div>
       <form method="dialog" className="modal-backdrop">
         <button
