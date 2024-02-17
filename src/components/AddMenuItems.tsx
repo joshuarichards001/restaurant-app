@@ -38,13 +38,16 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
             onChange={(e) => {
               onChangeInput(mI, e.target.value);
             }}
-            className="input input-sm input-bordered mr-4"
+            className="input input-sm bg-neutral mr-4 w-60 text-base"
           />
-          <div className="mr-8" onClick={() => onChangeToggle(mI)}>
-            {mI.wouldEatAgain ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
-          </div>
           <button
-            className="btn btn-xs btn-outline btn-error"
+            className="btn btn-sm btn-neutral mr-4"
+            onClick={() => onChangeToggle(mI)}
+          >
+            {mI.wouldEatAgain ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
+          </button>
+          <button
+            className="btn btn-sm btn-outline btn-error"
             onClick={() => {
               setMenuItems(menuItems.filter((item) => item.name !== mI.name));
             }}

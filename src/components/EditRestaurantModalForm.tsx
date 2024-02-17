@@ -40,7 +40,7 @@ export default function EditRestaurantModal({
           tabIndex={-1}
           readOnly
         />
-        <div className="flex justify-between mb-4">
+        <div className="flex mb-4">
           <input
             type="text"
             name="name"
@@ -51,8 +51,16 @@ export default function EditRestaurantModal({
                 name: e.target.value,
               }))
             }
-            className="input input-bordered font-bold text-xl text-primary mr-4 mb-4"
+            className="input input-bordered w-60 font-bold text-xl text-primary mr-4 mb-4"
           />
+          {isAddNew && formData.name !== "" && (
+            <button
+              className="btn btn-outline"
+              onClick={() => setFormData(getInitialFormData)}
+            >
+              Reset
+            </button>
+          )}
         </div>
         <div className="grid grid-cols-2 grid-rows-2 mb-4">
           <div>
@@ -129,15 +137,7 @@ export default function EditRestaurantModal({
         )}
       </div>
       <form method="dialog" className="modal-backdrop">
-        <button
-          onClick={() => {
-            if (isAddNew) {
-              setFormData(getInitialFormData());
-            }
-          }}
-        >
-          close
-        </button>
+        <button>close</button>
       </form>
     </dialog>
   );

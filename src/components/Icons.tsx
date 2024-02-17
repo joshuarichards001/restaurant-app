@@ -40,7 +40,7 @@ export const EmptyStar = () => (
 export const ThumbsUpIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    height="18"
+    height="14"
     viewBox="0 0 24 24"
     fill="green"
   >
@@ -51,7 +51,7 @@ export const ThumbsUpIcon = () => (
 export const ThumbsDownIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    height="18"
+    height="14"
     viewBox="0 0 24 24"
     fill="salmon"
   >
