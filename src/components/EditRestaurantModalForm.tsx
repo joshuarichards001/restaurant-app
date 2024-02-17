@@ -8,21 +8,20 @@ import StarRating from "./StarRating";
 
 type Props = {
   restaurant?: IRestaurant;
-  setIsView?: React.Dispatch<React.SetStateAction<boolean>>;
   isAddNew?: boolean;
+  modalId: string;
 };
 
-export default function EditRestaurantModalForm({
+export default function EditRestaurantModal({
   restaurant,
-  setIsView,
   isAddNew,
+  modalId,
 }: Props) {
   const [formData, setFormData] = useState(restaurant ?? getInitialFormData());
 
   const setDocument = async () => {
     try {
       await setDoc(doc(db, "restaurants", formData.id), formData);
-      setIsView && setIsView(true);
       isAddNew && setFormData(getInitialFormData());
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -30,82 +29,101 @@ export default function EditRestaurantModalForm({
   };
 
   return (
-    <div className="modal-box h-3/4 flex flex-col">
-      <div className="flex justify-between">
-        <h1 className="text-2xl mb-2">Add Restaurant</h1>
-        {!isAddNew ? (
-          <button
-            className="btn btn-sm btn-outline"
-            onClick={() => setIsView && setIsView(true)}
-          >
-            Back
-          </button>
-        ) : null}
+    <dialog id={modalId} className="modal modal-bottom">
+      <div className="modal-box h-3/4 flex flex-col">
+        {/** below is a component to catch the auto focus so it doesn't go to the edit button */}
+        <input
+          style={{ opacity: 0, position: "absolute" }}
+          tabIndex={-1}
+          readOnly
+        />
+        <div className="flex justify-between mb-4">
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={(e) =>
+              setFormData((prevState) => ({
+                ...prevState,
+                name: e.target.value,
+              }))
+            }
+            className="input input-bordered font-bold text-xl text-primary mr-4 mb-4"
+          />
+          <form method="dialog">
+            <button
+              onClick={setDocument}
+              className="btn btn-primary"
+              type="submit"
+            >
+              Save
+            </button>
+          </form>
+        </div>
+        <div className="grid grid-cols-2 grid-rows-2 mb-4">
+          <div>
+            <p>Food</p>
+            <StarRating
+              rating={formData.foodRating}
+              setRating={(value: number) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  foodRating: value,
+                }))
+              }
+            />
+          </div>
+          <div>
+            <p>Service</p>
+            <StarRating
+              rating={formData.serviceRating}
+              setRating={(value: number) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  serviceRating: value,
+                }))
+              }
+            />
+          </div>
+          <div>
+            <p>Vibe</p>
+            <StarRating
+              rating={formData.vibeRating}
+              setRating={(value: number) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  vibeRating: value,
+                }))
+              }
+            />
+          </div>
+          <div>
+            <p>Lil Blankie</p>
+            <input
+              type="checkbox"
+              className="checkbox mb-4"
+              checked={formData.littleBlanket}
+              onChange={() =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  littleBlanket: !prevState.littleBlanket,
+                }))
+              }
+            />
+          </div>
+        </div>
+        <AddMenuItems
+          menuItems={formData.menuItems}
+          setMenuItems={(items: IRestaurant["menuItems"]) =>
+            setFormData((prevState) => ({ ...prevState, menuItems: items }))
+          }
+        />
       </div>
-      <label htmlFor="name">Name</label>
-      <input
-        type="text"
-        name="name"
-        value={formData.name}
-        onChange={(e) =>
-          setFormData((prevState) => ({
-            ...prevState,
-            name: e.target.value,
-          }))
-        }
-        className="input input-sm input-bordered mr-4 mb-4"
-      />
-      <p>Food</p>
-      <StarRating
-        rating={formData.foodRating}
-        setRating={(value: number) =>
-          setFormData((prevState) => ({ ...prevState, foodRating: value }))
-        }
-      />
-      <p>Service</p>
-      <StarRating
-        rating={formData.serviceRating}
-        setRating={(value: number) =>
-          setFormData((prevState) => ({
-            ...prevState,
-            serviceRating: value,
-          }))
-        }
-      />
-      <p>Vibe</p>
-      <StarRating
-        rating={formData.vibeRating}
-        setRating={(value: number) =>
-          setFormData((prevState) => ({ ...prevState, vibeRating: value }))
-        }
-      />
-      <p>Lil Blankie</p>
-      <input
-        type="checkbox"
-        className="checkbox mb-4"
-        checked={formData.littleBlanket}
-        onChange={() =>
-          setFormData((prevState) => ({
-            ...prevState,
-            littleBlanket: !prevState.littleBlanket,
-          }))
-        }
-      />
-      <AddMenuItems
-        menuItems={formData.menuItems}
-        setMenuItems={(items: IRestaurant["menuItems"]) =>
-          setFormData((prevState) => ({ ...prevState, menuItems: items }))
-        }
-      />
-      <form method="dialog">
-        <button
-          onClick={setDocument}
-          className="btn btn-sm btn-primary"
-          type="submit"
-        >
-          Save Restaurant
+      <form method="dialog" className="modal-backdrop">
+        <button onClick={() => setFormData(restaurant ?? getInitialFormData())}>
+          close
         </button>
       </form>
-    </div>
+    </dialog>
   );
 }

@@ -14,7 +14,7 @@ export default function StarRating({ rating, setRating }: Props) {
   };
 
   return (
-    <div className="flex items-center mb-4">
+    <div className="flex items-center">
       <StarComponent index={1} rating={rating} onClick={() => onClickStar(1)} />
       <StarComponent index={2} rating={rating} onClick={() => onClickStar(2)} />
       <StarComponent index={3} rating={rating} onClick={() => onClickStar(3)} />

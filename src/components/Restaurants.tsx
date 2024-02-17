@@ -2,8 +2,8 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../services/firebase";
 import { IRestaurant } from "../services/types";
+import EditRestaurantModal from "./EditRestaurantModalForm";
 import Restaurant from "./Restaurant";
-import RestaurantModal from "./RestaurantModal";
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
@@ -48,7 +48,11 @@ export default function Restaurants() {
         </tbody>
       </table>
       {restaurants?.map((restaurant: IRestaurant) => (
-        <RestaurantModal key={restaurant.id} restaurant={restaurant} />
+        <EditRestaurantModal
+          key={restaurant.id}
+          restaurant={restaurant}
+          modalId={`restaurant_${restaurant.id}`}
+        />
       ))}
     </div>
   );

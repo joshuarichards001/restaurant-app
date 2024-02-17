@@ -1,6 +1,7 @@
 import { User, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import AddRestaurant from "./components/AddRestaurant";
+import EditRestaurantModal from "./components/EditRestaurantModalForm";
+import { PlusIcon } from "./components/Icons";
 import Restaurants from "./components/Restaurants";
 import SignInButton from "./components/SignInButton";
 import { auth } from "./services/firebase";
@@ -36,7 +37,17 @@ function App() {
     <div>
       <h1 className="text-4xl mb-4 m-5 mt-8 text-primary">Restaurants</h1>
       <Restaurants />
-      <AddRestaurant />
+      <button
+        className="btn btn-circle btn-primary fixed right-10 bottom-10"
+        onClick={() =>
+          (
+            document.getElementById("add_restaurant") as HTMLFormElement
+          ).showModal()
+        }
+      >
+        <PlusIcon />
+      </button>
+      <EditRestaurantModal isAddNew={true} modalId="add_restaurant" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { IRestaurant } from "../services/types";
+import { ThumbsDownIcon, ThumbsUpIcon } from "./Icons";
 
 type Props = {
   menuItems: IRestaurant["menuItems"];
@@ -16,12 +17,11 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
     setMenuItems(newMenuItems);
   };
 
-  const onChangeCheckbox = (
-    mI: IRestaurant["menuItems"][number],
-    checked: boolean,
-  ) => {
+  const onChangeToggle = (mI: IRestaurant["menuItems"][number]) => {
     const newMenuItems = menuItems.map((item) => {
-      return item.name === mI.name ? { ...item, wouldEatAgain: checked } : item;
+      return item.name === mI.name
+        ? { ...item, wouldEatAgain: !mI.wouldEatAgain }
+        : item;
     });
     setMenuItems(newMenuItems);
   };
@@ -38,24 +38,18 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
             onChange={(e) => {
               onChangeInput(mI, e.target.value);
             }}
-            className="input input-sm input-bordered mr-2"
+            className="input input-sm input-bordered mr-4"
           />
-          <input
-            type="checkbox"
-            name="wouldEatAgain"
-            className="checkbox mr-10"
-            checked={mI.wouldEatAgain}
-            onChange={(e) => {
-              onChangeCheckbox(mI, e.target.checked);
-            }}
-          />
+          <div className="mr-8" onClick={() => onChangeToggle(mI)}>
+            {mI.wouldEatAgain ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
+          </div>
           <button
             className="btn btn-xs btn-outline btn-error"
             onClick={() => {
               setMenuItems(menuItems.filter((item) => item.name !== mI.name));
             }}
           >
-            delete
+            x
           </button>
         </div>
       ))}
@@ -63,7 +57,7 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
         onClick={() => {
           setMenuItems([
             ...menuItems,
-            { id: Date.now(), name: "", wouldEatAgain: false },
+            { id: Date.now(), name: "", wouldEatAgain: true },
           ]);
         }}
         className="btn btn-sm"
