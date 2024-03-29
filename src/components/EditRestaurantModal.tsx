@@ -1,7 +1,7 @@
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { db } from "../services/firebase";
-import { getInitialFormData } from "../services/functions";
 import { IRestaurant } from "../services/types";
 import AddMenuItems from "./AddMenuItems";
 import StarRating from "./StarRating";
@@ -12,6 +12,16 @@ type Props = {
   modalId: string;
 };
 
+const getInitialFormData = (): IRestaurant => ({
+  id: uuidv4(),
+  name: "",
+  foodRating: 0,
+  serviceRating: 0,
+  vibeRating: 0,
+  menuItems: [],
+  littleBlanket: false,
+});
+
 export default function EditRestaurantModal({
   restaurant,
   isAddNew,
@@ -19,8 +29,9 @@ export default function EditRestaurantModal({
 }: Props) {
   const [formData, setFormData] = useState(restaurant ?? getInitialFormData());
 
+  // Autosave changes of the restaurant to Firestore
   useEffect(() => {
-    if (formData.name === "") {
+    if (isAddNew) {
       return;
     }
 
@@ -29,7 +40,22 @@ export default function EditRestaurantModal({
     }, 2000);
 
     return () => clearTimeout(timeoutId);
-  }, [formData]);
+  }, [formData, isAddNew]);
+
+  const createRestaurant = async () => {
+    await setDoc(doc(db, "restaurants", formData.id), formData);
+    setFormData(getInitialFormData());
+  };
+
+  const deleteRestaurant = async () => {
+    if (window.confirm("Are you sure?")) {
+      deleteDoc(doc(db, "restaurants", formData.id));
+    }
+  };
+
+  const InputHeader = ({ children }: { children: React.ReactNode }) => (
+    <p className="text-sm text-base-content/70 mb-1">{children}</p>
+  );
 
   return (
     <dialog id={modalId} className="modal modal-bottom">
@@ -40,10 +66,11 @@ export default function EditRestaurantModal({
           tabIndex={-1}
           readOnly
         />
-        <div className="flex mb-4">
+        <div className="flex items-center">
           <input
             type="text"
             name="name"
+            placeholder="Name..."
             value={formData.name}
             onChange={(e) =>
               setFormData((prevState) => ({
@@ -51,20 +78,21 @@ export default function EditRestaurantModal({
                 name: e.target.value,
               }))
             }
-            className="input input-bordered w-60 font-bold text-xl text-primary mr-4 mb-4"
+            className="input p-0 w-60 font-bold text-2xl text-accent mr-4"
           />
-          {isAddNew && formData.name !== "" && (
+          {!isAddNew && (
             <button
-              className="btn btn-outline"
-              onClick={() => setFormData(getInitialFormData)}
+              onClick={deleteRestaurant}
+              className="btn btn-neutral btn-sm"
+              type="submit"
             >
-              Reset
+              <p className="text-error">Delete</p>
             </button>
           )}
         </div>
         <div className="grid grid-cols-2 grid-rows-2 mb-4">
           <div>
-            <p>Food</p>
+            <InputHeader>Food</InputHeader>
             <StarRating
               rating={formData.foodRating}
               setRating={(value: number) =>
@@ -76,7 +104,7 @@ export default function EditRestaurantModal({
             />
           </div>
           <div>
-            <p>Service</p>
+            <InputHeader>Service</InputHeader>
             <StarRating
               rating={formData.serviceRating}
               setRating={(value: number) =>
@@ -88,7 +116,7 @@ export default function EditRestaurantModal({
             />
           </div>
           <div>
-            <p>Vibe</p>
+            <InputHeader>Vibe</InputHeader>
             <StarRating
               rating={formData.vibeRating}
               setRating={(value: number) =>
@@ -100,10 +128,10 @@ export default function EditRestaurantModal({
             />
           </div>
           <div>
-            <p>Lil Blankie</p>
+            <InputHeader>Lil Blankie</InputHeader>
             <input
               type="checkbox"
-              className="checkbox mb-4"
+              className="checkbox checkbox-warning border-gray-500 mb-4"
               checked={formData.littleBlanket}
               onChange={() =>
                 setFormData((prevState) => ({
@@ -114,24 +142,21 @@ export default function EditRestaurantModal({
             />
           </div>
         </div>
+        <InputHeader>Menu Items</InputHeader>
         <AddMenuItems
           menuItems={formData.menuItems}
           setMenuItems={(items: IRestaurant["menuItems"]) =>
             setFormData((prevState) => ({ ...prevState, menuItems: items }))
           }
         />
-        {!isAddNew && (
+        {isAddNew && (
           <form method="dialog">
             <button
-              onClick={() => {
-                if (window.confirm("Are you sure?")) {
-                  deleteDoc(doc(db, "restaurants", formData.id));
-                }
-              }}
-              className="btn btn-outline btn-error btn-sm"
+              onClick={createRestaurant}
+              className="btn btn-primary btn-sm"
               type="submit"
             >
-              Delete Restaurant
+              Create Restaurant
             </button>
           </form>
         )}

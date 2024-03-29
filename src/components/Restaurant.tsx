@@ -7,6 +7,7 @@ type Props = {
 export default function Restaurant({ restaurant }: Props) {
   return (
     <tr
+      className="active:bg-base-200"
       onClick={() =>
         (
           document.getElementById(
@@ -15,11 +16,18 @@ export default function Restaurant({ restaurant }: Props) {
         ).showModal()
       }
     >
-      <td>{restaurant.name}</td>
+      <td className="font-bold text-accent">{restaurant.name}</td>
       <td>{restaurant.foodRating}</td>
       <td>{restaurant.serviceRating}</td>
       <td>{restaurant.vibeRating}</td>
-      <td><input type="checkbox" className="checkbox" checked={restaurant.littleBlanket} disabled={true} /></td>
+      <td>
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={restaurant.littleBlanket}
+          disabled={true}
+        />
+      </td>
     </tr>
   );
 }

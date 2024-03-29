@@ -1,6 +1,6 @@
 import { User, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import EditRestaurantModal from "./components/EditRestaurantModalForm";
+import EditRestaurantModal from "./components/EditRestaurantModal";
 import { PlusIcon } from "./components/Icons";
 import Restaurants from "./components/Restaurants";
 import SignInButton from "./components/SignInButton";
@@ -35,7 +35,9 @@ function App() {
 
   return (
     <div>
-      <h1 className="text-4xl mb-4 m-5 mt-8 text-primary">Restaurants</h1>
+      <h1 className="text-4xl font-semibold tracking-wide mb-4 m-5 mt-8 text-primary">
+        Restaurants
+      </h1>
       <Restaurants />
       <button
         className="btn btn-circle btn-primary fixed right-10 bottom-10"

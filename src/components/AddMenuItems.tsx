@@ -28,7 +28,6 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
 
   return (
     <div className="mb-14">
-      <p className="mb-2">Menu Items (Eat Again?)</p>
       {menuItems.map((mI) => (
         <div key={mI.id} className="flex flex-row items-center mb-4">
           <input
@@ -38,21 +37,21 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
             onChange={(e) => {
               onChangeInput(mI, e.target.value);
             }}
-            className="input input-sm bg-neutral mr-4 w-60 text-base"
+            className="input input-sm bg-neutral rounded-r-none w-60 text-base"
           />
           <button
-            className="btn btn-sm btn-neutral mr-4"
+            className="btn btn-sm btn-neutral rounded-l-none mr-4"
             onClick={() => onChangeToggle(mI)}
           >
             {mI.wouldEatAgain ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
           </button>
           <button
-            className="btn btn-sm btn-outline btn-error"
+            className="btn btn-sm btn-neutral"
             onClick={() => {
               setMenuItems(menuItems.filter((item) => item.name !== mI.name));
             }}
           >
-            x
+            <p className="text-error font-bold">X</p>
           </button>
         </div>
       ))}

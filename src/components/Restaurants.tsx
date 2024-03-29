@@ -2,7 +2,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../services/firebase";
 import { IRestaurant } from "../services/types";
-import EditRestaurantModal from "./EditRestaurantModalForm";
+import EditRestaurantModal from "./EditRestaurantModal";
 import Restaurant from "./Restaurant";
 
 export default function Restaurants() {
@@ -20,6 +20,8 @@ export default function Restaurants() {
             ...data,
           });
         });
+
+        restaurants.sort((a, b) => a.name.localeCompare(b.name));
         setRestaurants(restaurants);
       },
     );
@@ -34,11 +36,11 @@ export default function Restaurants() {
       <table className="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Food</th>
-            <th>Service</th>
-            <th>Vibe</th>
-            <th>Blankie</th>
+            <th className="font-normal">Name</th>
+            <th className="font-normal">Food</th>
+            <th className="font-normal">Service</th>
+            <th className="font-normal">Vibe</th>
+            <th className="font-normal">Blankie</th>
           </tr>
         </thead>
         <tbody>
