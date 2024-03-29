@@ -62,7 +62,7 @@ export default function EditRestaurantModal({
       <div className="modal-box h-3/4 flex flex-col">
         {/** below is a component to catch the auto focus so it doesn't go to the edit button */}
         <input
-          style={{ opacity: 0, position: "absolute" }}
+          style={{ opacity: 0, position: "absolute", width: 0, height: 0 }}
           tabIndex={-1}
           readOnly
         />
