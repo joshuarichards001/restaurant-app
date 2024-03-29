@@ -6,7 +6,7 @@ type Props = {
 
 export default function Restaurant({ restaurant }: Props) {
   const getColor = (rating: number) => {
-    if (rating < 3) {
+    if (rating < 2.5) {
       return "text-red-500";
     } else if (rating < 4) {
       return "text-base-content";
