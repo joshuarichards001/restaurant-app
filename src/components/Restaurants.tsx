@@ -32,7 +32,7 @@ export default function Restaurants() {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-32">
       <table className="table">
         <thead>
           <tr>
