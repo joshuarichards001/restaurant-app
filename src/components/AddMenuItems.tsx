@@ -1,5 +1,5 @@
 import { IRestaurant } from "../services/types";
-import { ThumbsDownIcon, ThumbsUpIcon } from "./Icons";
+import { ThumbMiddleIcon, ThumbsDownIcon, ThumbsUpIcon } from "./Icons";
 
 type Props = {
   menuItems: IRestaurant["menuItems"];
@@ -20,10 +20,32 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
   const onChangeToggle = (mI: IRestaurant["menuItems"][number]) => {
     const newMenuItems = menuItems.map((item) => {
       return item.name === mI.name
-        ? { ...item, wouldEatAgain: !mI.wouldEatAgain }
+        ? { ...item, wouldEatAgain: rotateMenuItemRating(item.wouldEatAgain) }
         : item;
     });
     setMenuItems(newMenuItems);
+  };
+
+  const rotateMenuItemRating = (wouldEatAgain: boolean | null) => {
+    switch (wouldEatAgain) {
+      case true:
+        return null;
+      case null:
+        return false;
+      case false:
+        return true;
+    }
+  };
+
+  const renderMenuItem = (mI: IRestaurant["menuItems"][number]) => {
+    switch (mI.wouldEatAgain) {
+      case true:
+        return <ThumbsUpIcon />;
+      case false:
+        return <ThumbsDownIcon />;
+      case null:
+        return <ThumbMiddleIcon />;
+    }
   };
 
   return (
@@ -43,7 +65,7 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
             className="btn btn-sm btn-neutral rounded-l-none mr-4"
             onClick={() => onChangeToggle(mI)}
           >
-            {mI.wouldEatAgain ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
+            {renderMenuItem(mI)}
           </button>
           <button
             className="btn btn-sm btn-neutral"
