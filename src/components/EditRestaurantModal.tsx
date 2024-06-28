@@ -20,6 +20,7 @@ const getInitialFormData = (): IRestaurant => ({
   vibeRating: 0,
   menuItems: [],
   littleBlanket: false,
+  notes: "",
 });
 
 export default function EditRestaurantModal({
@@ -61,11 +62,13 @@ export default function EditRestaurantModal({
     <dialog id={modalId} className="modal modal-bottom">
       <div className="modal-box h-3/4 flex flex-col">
         {/** below is a component to catch the auto focus so it doesn't go to the edit button */}
-        <input
-          style={{ opacity: 0, position: "absolute", width: 0, height: 0 }}
-          tabIndex={-1}
-          readOnly
-        />
+        {!isAddNew && (
+          <input
+            style={{ opacity: 0, position: "absolute", width: 0, height: 0 }}
+            tabIndex={-1}
+            readOnly
+          />
+        )}
         <div className="flex items-center">
           <input
             type="text"
@@ -90,7 +93,7 @@ export default function EditRestaurantModal({
             </button>
           )}
         </div>
-        <div className="grid grid-cols-2 grid-rows-2 mb-4">
+        <div className="grid grid-cols-2 grid-rows-2">
           <div>
             <InputHeader>Food</InputHeader>
             <StarRating
@@ -142,13 +145,28 @@ export default function EditRestaurantModal({
             />
           </div>
         </div>
-        <InputHeader>Menu Items</InputHeader>
-        <AddMenuItems
-          menuItems={formData.menuItems}
-          setMenuItems={(items: IRestaurant["menuItems"]) =>
-            setFormData((prevState) => ({ ...prevState, menuItems: items }))
-          }
-        />
+        <div className="mb-6">
+          <InputHeader>Menu Items</InputHeader>
+          <AddMenuItems
+            menuItems={formData.menuItems}
+            setMenuItems={(items: IRestaurant["menuItems"]) =>
+              setFormData((prevState) => ({ ...prevState, menuItems: items }))
+            }
+          />
+        </div>
+        <div className="mb-10">
+          <InputHeader>Notes</InputHeader>
+          <textarea
+            className="textarea bg-base-300 w-full"
+            value={formData.notes}
+            onChange={(value) => {
+              setFormData((prevState) => ({
+                ...prevState,
+                notes: value.target.value,
+              }));
+            }}
+          />
+        </div>
         {isAddNew && (
           <form method="dialog">
             <button

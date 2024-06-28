@@ -6,4 +6,5 @@ export interface IRestaurant {
   vibeRating: number;
   menuItems: { id: number; name: string; wouldEatAgain: boolean }[];
   littleBlanket: boolean;
+  notes: string | undefined;
 }

@@ -27,7 +27,7 @@ export default function AddMenuItems({ menuItems, setMenuItems }: Props) {
   };
 
   return (
-    <div className="mb-14">
+    <div>
       {menuItems.map((mI) => (
         <div key={mI.id} className="flex flex-row items-center mb-4">
           <input
